@@ -23,4 +23,9 @@ public class spawnWatcher {
             // TODO: Teleport
         }
     }
+
+    @SubscribeEvent
+    public static void playerRespawn(PlayerEvent.PlayerRespawnEvent e){
+
+    }
 }
