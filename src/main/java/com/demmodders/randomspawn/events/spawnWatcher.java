@@ -34,7 +34,7 @@ public class spawnWatcher {
         e.player.setPositionAndUpdate(22f, 300f, 22f);
     }
 
-    private void setPlayerLocation(EntityPlayerMP player){
+    private void teleportPlayer(EntityPlayerMP player){
 
     }
 }
