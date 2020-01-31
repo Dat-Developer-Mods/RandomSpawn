@@ -1,5 +1,8 @@
 package com.demmodders.randomspawn.structures;
 
-public class Player {
+import net.minecraft.util.math.BlockPos;
 
+public class Player {
+    BlockPos spawn;
+    long lastTeleport;
 }

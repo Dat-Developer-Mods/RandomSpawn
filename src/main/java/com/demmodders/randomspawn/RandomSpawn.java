@@ -1,7 +1,9 @@
 package com.demmodders.randomspawn;
 
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 
 @Mod(modid = RandomSpawn.MODID, name = RandomSpawn.NAME,  version = RandomSpawn.VERSION, acceptableRemoteVersions  = "*")
 public class RandomSpawn
@@ -15,5 +17,10 @@ public class RandomSpawn
     public void init(FMLInitializationEvent event)
     {
 
+    }
+
+    @Mod.EventHandler
+    public void init(FMLPostInitializationEvent event){
+        FMLCommonHandler.instance().getMinecraftServerInstance().getSpawnRadius()
     }
 }
