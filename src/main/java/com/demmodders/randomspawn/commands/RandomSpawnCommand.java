@@ -38,20 +38,27 @@ public class RandomSpawnCommand extends CommandBase {
 
     @Override
     public String getUsage(ICommandSender sender) {
-        return (RandomSpawnConfig.saveSpawn ? "Teleports you to your personal spawn, use \"/spawnreset\" for a new spawn" : "Teleports you to a random place in the world") + " /spawn [player]";
+        return TextFormatting.GOLD + "/spawn [player] - " + (RandomSpawnConfig.saveSpawn ? "Teleports you to your personal spawn, use \"/spawnreset\" for a new spawn" : "Teleports you to a random place in the world");
     }
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        if (!(sender instanceof EntityPlayerMP) && args.length != 1) return;
+        // Ensure its either being called by a player, or on a player
+        if (!(sender instanceof EntityPlayerMP) && args.length != 1) {
+            sender.sendMessage(new TextComponentString(TextFormatting.RED + "As the server, you can only make specific players go to spawn, use: /spawn <player>"));
+            return;
+        }
+
+        // If its by a player, make sure they have the permissions
         if (sender instanceof EntityPlayerMP) {
             if (!PermissionAPI.hasPermission((EntityPlayerMP) sender, "datrandomteleport.rspawn.spawn") || (!PermissionAPI.hasPermission((EntityPlayerMP) sender, "datrandomteleport.rspawn.spawnother") && args.length > 0)) {
                 sender.sendMessage(new TextComponentString(TextFormatting.RED + "You don't have permission to do that"));
                 return;
             }
         }
+
+        // Set the target to their argrument if they have provided one
         Player player;
-        BlockPos destination;
         EntityPlayerMP target;
         if (args.length != 0) {
             target = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerByUsername(args[0]);
@@ -59,6 +66,7 @@ public class RandomSpawnCommand extends CommandBase {
             target = (EntityPlayerMP) sender;
         }
 
+        // Tell the player if we can't find their argument
         if (target != null){
             player = Util.getPlayer(target.getUniqueID());
             if(args.length != 0) sender.sendMessage(new TextComponentString(TextFormatting.GOLD + "Teleporting " + args[0] + " to their spawn"));
@@ -67,17 +75,18 @@ public class RandomSpawnCommand extends CommandBase {
             return;
         }
 
+        // work out what to say to the player
         if (RandomSpawnConfig.saveSpawn && player != null) {
             if (target == sender && player.lastTeleport + (RandomSpawnConfig.spawnReDelay * 1000) > System.currentTimeMillis()){
                 sender.sendMessage(new TextComponentString(TextFormatting.RED + "you cannot teleport to spawn for another " + (RandomSpawnConfig.spawnReDelay - ((((System.currentTimeMillis())) - player.lastTeleport)/1000)) + " seconds"));
                 return;
             }
-            target.sendMessage(new TextComponentString(TextFormatting.GOLD + "Telporting to your spawn in " + RandomSpawnConfig.spawnDelay + " seconds"));
-            destination = player.spawn;
+            target.sendMessage(new TextComponentString(TextFormatting.GOLD + "Telporting to your spawn" + (RandomSpawnConfig.spawnDelay > 0 ? " in " + RandomSpawnConfig.spawnDelay + " seconds" : "")));
         } else {
-            destination = Util.generateSpawnPos(RandomSpawnConfig.spawnDimension);
-            target.sendMessage(new TextComponentString(TextFormatting.GOLD + "Telporting to a random destination in " + RandomSpawnConfig.spawnDelay + " seconds"));
+            target.sendMessage(new TextComponentString(TextFormatting.GOLD + "Telporting to a random destination" + (RandomSpawnConfig.spawnDelay > 0 ? "in " + RandomSpawnConfig.spawnDelay + " seconds" : "")));
         }
+
+        // Create the teleport event and wait for the delay
         DelayHandler.addEvent(new DelayedSpawnEvent(target, RandomSpawnConfig.spawnDelay));
     }
 

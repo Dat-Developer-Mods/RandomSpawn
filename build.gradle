@@ -12,8 +12,8 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 
 
 version = "1.0"
-group = "com.demmodders.factions" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "demfactions"
+group = "com.demmodders.randomspawn" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "datrandomspawn"
 
 sourceCompatibility = targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 compileJava {
@@ -36,7 +36,7 @@ minecraft {
 dependencies {
     // you may put jars on which you depend on in ./libs
     // or you may define them like so..
-    //compile "some.group:artifact:version:classifier"
+    compile fileTree(dir: 'lib', include: ['*.jar'])
     //compile "some.group:artifact:version"
 
     // real examples

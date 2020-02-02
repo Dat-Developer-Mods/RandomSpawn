@@ -51,12 +51,18 @@ public class ResetSpawnCommand extends CommandBase {
 
     @Override
     public String getUsage(ICommandSender sender) {
-        return "Reset your spawn to a new random location /spawnreset [player]";
+        return TextFormatting.GOLD + (RandomSpawnConfig.saveSpawn ? "/spawnreset [player] - Reset your spawn to a new random location" : "The server has disabled saving spawn, this will do nothing");
     }
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        if (!(sender instanceof EntityPlayerMP) && args.length != 1) return;
+        // Ensure its either being called by a player, or on a player
+        if (!(sender instanceof EntityPlayerMP) && args.length != 1) {
+            sender.sendMessage(new TextComponentString(TextFormatting.RED + "As the server, you can only reset the spawn of specific players, use: /spawnreset <player>"));
+            return;
+        }
+
+        // If called by a player make sure they have permission
         if (sender instanceof EntityPlayerMP) {
             if (!PermissionAPI.hasPermission((EntityPlayerMP) sender, "datrandomteleport.rspawn.spawnreset") || (!PermissionAPI.hasPermission((EntityPlayerMP) sender, "datrandomteleport.rspawn.spawnresetother") && args.length > 0)) {
                 sender.sendMessage(new TextComponentString(TextFormatting.RED + "You don't have permission to do that"));
@@ -64,11 +70,13 @@ public class ResetSpawnCommand extends CommandBase {
             }
         }
 
+        // Catch if has been called when saving spawn is disabled, as it means this command won't actually do anything
         if (!RandomSpawnConfig.saveSpawn) {
-            sender.sendMessage(new TextComponentString(TextFormatting.RED + "Spawn is not saved, this will do nothing"));
+            sender.sendMessage(new TextComponentString(TextFormatting.RED + "The server has disabled saving spawn points, this will do nothing"));
             return;
         }
 
+        // Work out who the target is
         Player player;
         EntityPlayerMP target;
         if (args.length != 0) {
@@ -83,6 +91,8 @@ public class ResetSpawnCommand extends CommandBase {
             sender.sendMessage(new TextComponentString(TextFormatting.RED + "Unable to find that player"));
             return;
         }
+
+        // Figure out a new spawn point
         target.sendMessage(new TextComponentString(TextFormatting.GOLD + "Your spawn has been reset"));
         player = new Player(Util.generateSpawnPos(RandomSpawnConfig.spawnDimension));
         Util.savePlayer((target).getUniqueID(), player);

@@ -22,7 +22,7 @@ public class spawnWatcher {
     public static final Logger LOGGER = LogManager.getLogger(RandomSpawn.MODID);
     @SubscribeEvent
     public static void playerJoin(PlayerEvent.PlayerLoggedInEvent e){
-        LOGGER.info("Test");
+        // Check they're joining for the first time (so they don't randomly teleport when they join for the first time)
         if (Util.getPlayer(e.player.getUniqueID()) == null){
             Util.teleportPlayer((EntityPlayerMP) e.player);
         }
@@ -30,6 +30,8 @@ public class spawnWatcher {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void playerRespawn(PlayerEvent.PlayerRespawnEvent e){
-        Util.teleportPlayer((EntityPlayerMP) e.player);
+        if (!e.isEndConquered() && !e.player.isSpawnForced(e.player.getSpawnDimension())) {
+            Util.teleportPlayer((EntityPlayerMP) e.player);
+        }
     }
 }

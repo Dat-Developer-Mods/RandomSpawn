@@ -7,7 +7,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
-@Mod(modid = RandomSpawn.MODID, name = RandomSpawn.NAME,  version = RandomSpawn.VERSION, acceptableRemoteVersions  = "*")
+@Mod(modid = RandomSpawn.MODID, name = RandomSpawn.NAME,  version = RandomSpawn.VERSION, acceptableRemoteVersions  = "*", dependencies = "required-after:datmoddingapi")
 public class RandomSpawn
 {
     public static final String MODID = "datrandomspawn";
