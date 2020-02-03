@@ -12,7 +12,7 @@ public class RandomSpawn
 {
     public static final String MODID = "datrandomspawn";
     public static final String NAME = "Random Spawn";
-    public static final String VERSION = "0.0.1";
+    public static final String VERSION = "0.1.0";
     public static final String MC_VERSION = "[1.12.2]";
 
     @Mod.EventHandler

@@ -36,7 +36,7 @@ minecraft {
 dependencies {
     // you may put jars on which you depend on in ./libs
     // or you may define them like so..
-    compile fileTree(dir: 'lib', include: ['*.jar'])
+    //compile "some.group:artifact:version:classifier"
     //compile "some.group:artifact:version"
 
     // real examples
@@ -50,6 +50,8 @@ dependencies {
     // except that these dependencies get remapped to your current MCP mappings
     //deobfCompile 'com.mod-buildcraft:buildcraft:6.0.8:dev'
     //deobfProvided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
+
+    compile fileTree(dir: 'lib', include: ['*.jar'])
 
     // for more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html

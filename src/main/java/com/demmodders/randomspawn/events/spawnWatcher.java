@@ -30,7 +30,7 @@ public class spawnWatcher {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void playerRespawn(PlayerEvent.PlayerRespawnEvent e){
-        if (!e.isEndConquered() && !e.player.isSpawnForced(e.player.getSpawnDimension())) {
+        if (!e.isEndConquered() && e.player.getBedLocation(e.player.dimension) == null) {
             Util.teleportPlayer((EntityPlayerMP) e.player);
         }
     }
