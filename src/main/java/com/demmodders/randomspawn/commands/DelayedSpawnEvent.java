@@ -15,7 +15,7 @@ public class DelayedSpawnEvent extends DelayedTeleportEvent {
     @Override
     public void execute(){
         // Teleport the player to their spawn
-        Util.teleportPlayer(player);
+        Util.teleportPlayer(player, true);
 
         // Get the player
         Player thePlayer = Util.getPlayer(player.getUniqueID());

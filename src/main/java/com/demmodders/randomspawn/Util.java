@@ -1,6 +1,7 @@
 package com.demmodders.randomspawn;
 
 import com.demmodders.datmoddingapi.structures.Location;
+import com.demmodders.datmoddingapi.util.BlockPosUtil;
 import com.demmodders.datmoddingapi.util.DatTeleporter;
 import com.demmodders.datmoddingapi.util.FileHelper;
 import com.demmodders.randomspawn.config.RandomSpawnConfig;
@@ -62,7 +63,7 @@ public class Util {
      * @return The player object
      */
     public static Player createPlayer(){
-        return new Player(RandomSpawnConfig.commandSpawnDimension, generateSpawnPos(RandomSpawnConfig.commandSpawnDimension));
+        return new Player(RandomSpawnConfig.defaultSpawnDimension, generateSpawnPos(RandomSpawnConfig.defaultSpawnDimension));
     }
 
 
@@ -112,40 +113,47 @@ public class Util {
      * Teleports the given player to their spawn
      * @param player The player being telported
      */
-    public static void teleportPlayer(EntityPlayerMP player){
+    public static void teleportPlayer(EntityPlayerMP player, boolean forceSpawn){
         Player playerObject = Util.getPlayer(player.getUniqueID());
         BlockPos spawnPos;
+        World world;
+        int dimension;
 
         // TODO: Account for world
 
-        boolean world = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(player.dimension).provider.canRespawnHere();
-
-        // Get their spawn if saved, otherwise a random one
-        if (playerObject == null || !RandomSpawnConfig.saveSpawn) {
-            spawnPos = Util.generateSpawnPos(RandomSpawnConfig.spawnDimension);
-            Util.savePlayer(player.getUniqueID(), new Player(spawnPos));
+        if (RandomSpawnConfig.forceSpawnDimension || forceSpawn || !FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(player.dimension).provider.canRespawnHere()) {
+            dimension = RandomSpawnConfig.defaultSpawnDimension;
         } else {
-            spawnPos = playerObject.spawn;
-
-            //Adjust spawn if safe spawn
-            if (RandomSpawnConfig.safeSpawn){
-                World world = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(RandomSpawnConfig.spawnDimension);
-                if (world.getBlockState(spawnPos.up()).getMaterial().blocksMovement()){
-                    spawnPos = generateSpawnPos(RandomSpawnConfig.spawnDimension);
-                    player.sendMessage(new TextComponentString(TextFormatting.GOLD + "Your spawn is blocked, you have been given a new spawn"));
-                    Util.savePlayer(player.getUniqueID(), new Player(spawnPos));
-                }
-            }
+            dimension = player.dimension;
         }
+        world = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(dimension);
+
+        if (playerObject == null) {
+            playerObject = new Player(dimension, generateSpawnPos(dimension));
+            savePlayer(player.getUniqueID(), playerObject);
+        } else if (!playerObject.spawn.containsKey(dimension) || !RandomSpawnConfig.saveSpawn){
+            playerObject.spawn.put(dimension, generateCoordinates(world));
+            savePlayer(player.getUniqueID(), playerObject);
+        } else {
+            spawnPos = BlockPosUtil.findSafeZ(dimension, playerObject.spawn.get(dimension), 4);
+            if (spawnPos == null){
+                playerObject.spawn.put(dimension, generateCoordinates(world));
+            } else {
+                playerObject.spawn.put(dimension, spawnPos);
+            }
+            savePlayer(player.getUniqueID(), playerObject);
+        }
+
+        spawnPos = playerObject.spawn.get(dimension);
 
         // Hack to prevent player moving wrongly
         ObfuscationReflectionHelper.setPrivateValue(EntityPlayerMP.class, player, true, "invulnerableDimensionChange", "field_184851_cj");
 
         // Handle cross dimension
-        if (player.dimension == RandomSpawnConfig.spawnDimension) {
+        if (player.dimension == dimension) {
             player.connection.setPlayerLocation(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), 0, 0);
         } else {
-            player.changeDimension(RandomSpawnConfig.spawnDimension, new DatTeleporter(new Location(RandomSpawnConfig.spawnDimension, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), 0, 0)));
+            player.changeDimension(dimension, new DatTeleporter(new Location(dimension, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), 0, 0)));
         }
 
     }

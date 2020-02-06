@@ -24,14 +24,14 @@ public class spawnWatcher {
     public static void playerJoin(PlayerEvent.PlayerLoggedInEvent e){
         // Check they're joining for the first time (so they don't randomly teleport when they join for the first time)
         if (Util.getPlayer(e.player.getUniqueID()) == null){
-            Util.teleportPlayer((EntityPlayerMP) e.player);
+            Util.teleportPlayer((EntityPlayerMP) e.player, true);
         }
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void playerRespawn(PlayerEvent.PlayerRespawnEvent e){
         if (!e.isEndConquered() && e.player.getBedLocation(e.player.dimension) == null) {
-            Util.teleportPlayer((EntityPlayerMP) e.player);
+            Util.teleportPlayer((EntityPlayerMP) e.player ,false);
         }
     }
 }

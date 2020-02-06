@@ -13,13 +13,9 @@ public class RandomSpawnConfig {
     @Config.Comment("Should the player always spawn in the same world")
     public static boolean forceSpawnDimension = false;
 
-    @Config.Name("Spawn Dimension")
-    @Config.Comment("The dimension that the player will spawn in (World is 0, nether is -1, end is 1, mod dimensions are also accepted)\n Does nothing unless force spawn dimension is enabled")
-    public static int spawnDimension = 0;
-
     @Config.Name("Default target Dimension")
-    @Config.Comment("The dimension that the player will go to when they spawn in for the first time, and when they use /spawn (World is 0, nether is -1, end is 1, mod dimensions are also accepted)")
-    public static int commandSpawnDimension = 0;
+    @Config.Comment("The dimension that the player will go to when they spawn in for the first time, if they respawn and Force Spawn Dimension is enabled, and when they use /spawn (World is 0, nether is -1, end is 1, mod dimensions are also accepted)")
+    public static int defaultSpawnDimension = 0;
 
     @Config.Name("Save Spawn")
     @Config.Comment("Should the player spawn at the same place every time they go to spawn")
