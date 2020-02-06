@@ -62,7 +62,7 @@ public class Util {
      * @return The player object
      */
     public static Player createPlayer(){
-        return new Player(generateSpawnPos(RandomSpawnConfig.spawnDimension));
+        return new Player(RandomSpawnConfig.commandSpawnDimension, generateSpawnPos(RandomSpawnConfig.commandSpawnDimension));
     }
 
 
@@ -115,6 +115,10 @@ public class Util {
     public static void teleportPlayer(EntityPlayerMP player){
         Player playerObject = Util.getPlayer(player.getUniqueID());
         BlockPos spawnPos;
+
+        // TODO: Account for world
+
+        boolean world = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(player.dimension).provider.canRespawnHere();
 
         // Get their spawn if saved, otherwise a random one
         if (playerObject == null || !RandomSpawnConfig.saveSpawn) {

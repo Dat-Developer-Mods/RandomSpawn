@@ -2,16 +2,22 @@ package com.demmodders.randomspawn.structures;
 
 import net.minecraft.util.math.BlockPos;
 
+import java.util.HashMap;
+
 public class Player {
-    public BlockPos spawn;
+    public HashMap<Integer, BlockPos> spawn = new HashMap<>();
     public long lastTeleport = 0;
 
-    // Empty constructor for gson
+    // Empty constructor for GSON
     public Player(){
 
     }
 
-    public Player(BlockPos Spawn){
-        spawn = Spawn;
+    public Player(int Dim, BlockPos Spawn){
+        spawn.put(Dim, Spawn);
+    }
+
+    public void setDimSpawn(int Dim, BlockPos Spawn){
+        spawn.put(Dim, Spawn);
     }
 }
