@@ -2,8 +2,6 @@ package com.demmodders.randomspawn.commands;
 
 
 import com.demmodders.datmoddingapi.delayedexecution.DelayHandler;
-import com.demmodders.datmoddingapi.delayedexecution.delayedevents.DelayedTeleportEvent;
-import com.demmodders.datmoddingapi.structures.Location;
 import com.demmodders.randomspawn.Util;
 import com.demmodders.randomspawn.config.RandomSpawnConfig;
 import com.demmodders.randomspawn.structures.Player;
@@ -15,13 +13,11 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.Teleporter;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.server.permission.PermissionAPI;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class RandomSpawnCommand extends CommandBase {

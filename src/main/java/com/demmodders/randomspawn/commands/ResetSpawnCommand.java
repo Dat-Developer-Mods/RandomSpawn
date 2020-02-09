@@ -94,7 +94,7 @@ public class ResetSpawnCommand extends CommandBase {
 
         // Figure out a new spawn point
         target.sendMessage(new TextComponentString(TextFormatting.GOLD + "Your spawn has been reset"));
-        player = new Player(Util.generateSpawnPos(RandomSpawnConfig.spawnDimension));
+        player = new Player(((EntityPlayerMP) sender).dimension, Util.generateSpawnPos(RandomSpawnConfig.defaultSpawnDimension));
         Util.savePlayer((target).getUniqueID(), player);
     }
 }

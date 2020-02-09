@@ -37,6 +37,7 @@ public class SetSpawnCommand extends CommandBase {
         // Set the spawn in config and update the file
         RandomSpawnConfig.spawnX = (int) ((EntityPlayerMP) sender).posX;
         RandomSpawnConfig.spawnZ = (int) ((EntityPlayerMP) sender).posZ;
+        sender.sendMessage(new TextComponentString(TextFormatting.GOLD + "Set the spawn area centre to your location: X=" + sender.getPosition().getX() + " Z=" + sender.getPosition().getZ()));
         ConfigManager.sync(RandomSpawn.MODID, Config.Type.INSTANCE);
     }
 

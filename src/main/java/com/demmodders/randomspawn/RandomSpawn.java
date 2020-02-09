@@ -1,7 +1,6 @@
 package com.demmodders.randomspawn;
 
 import com.demmodders.randomspawn.commands.CommandRegister;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;

@@ -1,10 +1,6 @@
 package com.demmodders.randomspawn.commands;
 
-import com.demmodders.randomspawn.RandomSpawn;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
 import net.minecraftforge.server.permission.PermissionAPI;
 
@@ -20,5 +16,6 @@ public class CommandRegister {
     public static void registerCommands(FMLServerStartingEvent e){
         e.registerServerCommand(new RandomSpawnCommand());
         e.registerServerCommand(new ResetSpawnCommand());
+        e.registerServerCommand(new SetSpawnCommand());
     }
 }

@@ -14,7 +14,7 @@ public class RandomSpawnConfig {
     public static boolean forceSpawnDimension = false;
 
     @Config.Name("Default target Dimension")
-    @Config.Comment("The dimension that the player will go to when they spawn in for the first time, if they respawn and Force Spawn Dimension is enabled, and when they use /spawn (World is 0, nether is -1, end is 1, mod dimensions are also accepted)")
+    @Config.Comment("The dimension that the player will go to when they spawn in for the first time, if they respawn and Force Spawn Dimension is enabled, and when they use /spawn (World is 0, nether is -1, end is 1, mod dimensions are also accepted)\n(This nod is not nearly setup for spawning in the end or nether, this option has been added of mod dimensions, you will not spawn in a sensible location in either of those dimensions)")
     public static int defaultSpawnDimension = 0;
 
     @Config.Name("Save Spawn")
@@ -52,6 +52,14 @@ public class RandomSpawnConfig {
     @Config.Comment("The z component of the centre of the are where players spawn")
     public static int spawnZ = 0;
 
+    @Config.Name("Accurate Y Position Generation")
+    @Config.Comment("Should the mod use a slower but more accurate method of deciding where to place the player on the Y Axis")
+    public static boolean accurateGeneration = false;
+
+    @Config.Name("Max Generation Attempts")
+    @Config.Comment("How many times should the mod try to generate a spawn position after failing before defaulting to the Spawn Centre (-1 for infinite)")
+    @Config.RangeInt(min = -1)
+    public static int generationRetries = 5;
 
 
     @Mod.EventBusSubscriber(modid = RandomSpawn.MODID)
