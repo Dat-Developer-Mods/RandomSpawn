@@ -23,6 +23,10 @@ repositories {
         name = "sponge"
         url = "http://repo.spongepowered.org/maven/"
     }
+    maven {
+        name = "CurseForge"
+        url = "https://minecraft.curseforge.com/api/maven/"
+    }
 }
 
 apply plugin: 'net.minecraftforge.gradle.forge'
@@ -69,7 +73,8 @@ dependencies {
     //deobfCompile 'com.mod-buildcraft:buildcraft:6.0.8:dev'
     //deobfProvided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
 
-    implementation fileTree(dir: 'lib', include: ['*.jar'])
+    // implementation fileTree(dir: 'lib', include: ['*.jar'])
+    compile 'dat-modding-api:datmoddingapi:latest'
     implementation group: "com.forgeessentials", name: "forgeessentials", version: "1.4.4-SNAPSHOT", classifier: "dev", changing: true
     implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.0'
     // for more info...
