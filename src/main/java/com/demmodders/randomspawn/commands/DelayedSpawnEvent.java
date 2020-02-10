@@ -1,10 +1,12 @@
 package com.demmodders.randomspawn.commands;
 
 import com.demmodders.datmoddingapi.delayedexecution.delayedevents.DelayedTeleportEvent;
-import com.demmodders.datmoddingapi.structures.Location;
 import com.demmodders.randomspawn.Util;
 import com.demmodders.randomspawn.structures.Player;
+import com.forgeessentials.commons.selections.WarpPoint;
+import com.forgeessentials.util.PlayerInfo;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraftforge.fml.common.Loader;
 
 public class DelayedSpawnEvent extends DelayedTeleportEvent {
     public DelayedSpawnEvent(EntityPlayerMP Player, int Delay) {
@@ -14,6 +16,11 @@ public class DelayedSpawnEvent extends DelayedTeleportEvent {
 
     @Override
     public void execute(){
+        // Forge Essentials
+        if (Loader.isModLoaded("forgeessentials")) {
+            PlayerInfo.get(player.getUniqueID()).setLastTeleportOrigin(new WarpPoint(player.dimension, player.posX, player.posY, player.posZ, player.cameraPitch, player.rotationYaw));
+        }
+
         // Teleport the player to their spawn
         Util.teleportPlayer(player, true);
 
@@ -22,7 +29,9 @@ public class DelayedSpawnEvent extends DelayedTeleportEvent {
         if (thePlayer == null) thePlayer = Util.createPlayer();
 
         // Update their last teleport so we can check the cool down later
+
         thePlayer.lastTeleport = System.currentTimeMillis();
+
         Util.savePlayer(player.getUniqueID(), thePlayer);
     }
 }

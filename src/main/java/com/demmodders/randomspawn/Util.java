@@ -6,12 +6,16 @@ import com.demmodders.datmoddingapi.util.DatTeleporter;
 import com.demmodders.datmoddingapi.util.FileHelper;
 import com.demmodders.randomspawn.config.RandomSpawnConfig;
 import com.demmodders.randomspawn.structures.Player;
+import com.forgeessentials.api.APIRegistry;
+import com.forgeessentials.commons.selections.WarpPoint;
+import com.forgeessentials.util.PlayerInfo;
 import com.google.gson.Gson;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -165,16 +169,16 @@ public class Util {
             }
         }
 
-        spawnPos = playerObject.spawn.get(dimension).add(.5F, 0D, .5F);
+        spawnPos = playerObject.spawn.get(dimension);
 
         // Hack to prevent player moving wrongly
         ObfuscationReflectionHelper.setPrivateValue(EntityPlayerMP.class, player, true, "invulnerableDimensionChange", "field_184851_cj");
 
         // Handle cross dimension
         if (player.dimension == dimension) {
-            player.connection.setPlayerLocation(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), 0, 0);
+            player.connection.setPlayerLocation(spawnPos.getX() + .5D, spawnPos.getY(), spawnPos.getZ() + .5D, 0, 0);
         } else {
-            player.changeDimension(dimension, new DatTeleporter(new Location(dimension, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), 0, 0)));
+            player.changeDimension(dimension, new DatTeleporter(new Location(dimension, spawnPos.getX() + .5D, spawnPos.getY(), spawnPos.getZ() + .5D, 0, 0)));
         }
     }
 }
