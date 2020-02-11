@@ -51,7 +51,7 @@ public class ResetSpawnCommand extends CommandBase {
 
     @Override
     public String getUsage(ICommandSender sender) {
-        return TextFormatting.GOLD + (RandomSpawnConfig.saveSpawn ? "/spawnreset [player] - Reset your spawn to a new random location" : "The server has disabled saving spawn, this will do nothing");
+        return TextFormatting.GOLD + (RandomSpawnConfig.saveSpawn ? "/spawnreset [player] - Reset your spawn/the spawn of the given player to a new random location" : "The server has disabled saving spawn, this will do nothing");
     }
 
     @Override

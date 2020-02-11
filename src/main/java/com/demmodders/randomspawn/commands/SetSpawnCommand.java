@@ -11,6 +11,7 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
+import net.minecraftforge.server.permission.PermissionAPI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,11 @@ public class SetSpawnCommand extends CommandBase {
             return;
         }
 
+        if (!PermissionAPI.hasPermission((EntityPlayerMP) sender, "datrandomteleport.rspawn.admin")) {
+            sender.sendMessage(new TextComponentString(TextFormatting.RED + "You don't have permission to do that"));
+            return;
+        }
+
         // Set the spawn in config and update the file
         RandomSpawnConfig.spawnX = (int) ((EntityPlayerMP) sender).posX;
         RandomSpawnConfig.spawnZ = (int) ((EntityPlayerMP) sender).posZ;
@@ -43,7 +49,7 @@ public class SetSpawnCommand extends CommandBase {
 
     @Override
     public int getRequiredPermissionLevel() {
-        return 0;
+        return 2;
     }
 
     @Override
