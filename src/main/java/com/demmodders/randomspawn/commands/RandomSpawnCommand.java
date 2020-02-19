@@ -79,7 +79,7 @@ public class RandomSpawnCommand extends CommandBase {
             }
             target.sendMessage(new TextComponentString(TextFormatting.GOLD + "Telporting to your spawn" + (RandomSpawnConfig.spawnDelay > 0 ? " in " + RandomSpawnConfig.spawnDelay + " seconds" : "")));
         } else {
-            target.sendMessage(new TextComponentString(TextFormatting.GOLD + "Telporting to a random destination" + (RandomSpawnConfig.spawnDelay > 0 ? "in " + RandomSpawnConfig.spawnDelay + " seconds" : "")));
+            target.sendMessage(new TextComponentString(TextFormatting.GOLD + "Telporting to a random destination" + (RandomSpawnConfig.spawnDelay > 0 ? " in " + RandomSpawnConfig.spawnDelay + " seconds" : "")));
         }
 
         // Create the teleport event and wait for the delay

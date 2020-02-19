@@ -6,16 +6,12 @@ import com.demmodders.datmoddingapi.util.DatTeleporter;
 import com.demmodders.datmoddingapi.util.FileHelper;
 import com.demmodders.randomspawn.config.RandomSpawnConfig;
 import com.demmodders.randomspawn.structures.Player;
-import com.forgeessentials.api.APIRegistry;
-import com.forgeessentials.commons.selections.WarpPoint;
-import com.forgeessentials.util.PlayerInfo;
 import com.google.gson.Gson;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -57,6 +53,7 @@ public class Util {
             BufferedWriter writer = new BufferedWriter(new FileWriter(playerFile));
             writer.write(gson.toJson(Player));
             writer.close();
+            LOGGER.debug(RandomSpawn.MODID + ": Saved player " + PlayerID);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -161,6 +158,7 @@ public class Util {
             if (RandomSpawnConfig.safeSpawn) {
                 spawnPos = BlockPosUtil.findSafeZ(dimension, playerObject.spawn.get(dimension), 4);
                 if (spawnPos == null) {
+                    LOGGER.warn(RandomSpawn.MODID + ": Spawn is unsafe, giving the player a new spawn");
                     playerObject.spawn.put(dimension, generateSpawnPos(dimension));
                 } else {
                     playerObject.spawn.put(dimension, spawnPos);
@@ -168,6 +166,8 @@ public class Util {
                 savePlayer(player.getUniqueID(), playerObject);
             }
         }
+
+
 
         spawnPos = playerObject.spawn.get(dimension);
 
