@@ -70,7 +70,7 @@ dependencies {
     //deobfCompile 'com.mod-buildcraft:buildcraft:6.0.8:dev'
     //deobfProvided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
 
-    compile 'com.github.jtljac:DatModdingAPI:1.+'
+    compile 'com.github.jtljac:DatModdingAPI:1.0.1'
     implementation group: "com.forgeessentials", name: "forgeessentials", version: "1.4.4-SNAPSHOT", classifier: "dev", changing: true
     implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.0'
     // for more info...
