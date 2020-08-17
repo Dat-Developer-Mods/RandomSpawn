@@ -125,9 +125,9 @@ public class Util {
     public static BlockPos generateCoordinates(){
         Random random = new Random();
 
-        int x = random.nextInt(RandomSpawnConfig.spawnDistance);
+        int x = random.nextInt(RandomSpawnConfig.spawnDistanceX);
         if (random.nextBoolean()) x *= -1;
-        int z = random.nextInt(RandomSpawnConfig.spawnDistance);
+        int z = random.nextInt(RandomSpawnConfig.spawnDistanceZ);
         if (random.nextBoolean()) z *= -1;
 
         return new BlockPos(x + RandomSpawnConfig.spawnX, 0, z + RandomSpawnConfig.spawnZ);

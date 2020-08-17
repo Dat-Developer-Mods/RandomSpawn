@@ -39,10 +39,15 @@ public class RandomSpawnConfig {
     @Config.RangeInt(min = 0)
     public static int spawnReDelay = 5;
 
-    @Config.Name("Spawn Radius")
-    @Config.Comment("The maximum distance from the origin that the player can spawn")
+    @Config.Name("Spawn Radius X")
+    @Config.Comment("The maximum distance from the origin that the player can spawn in the x direction")
     @Config.RangeInt(min = 0)
-    public static int spawnDistance = 1000;
+    public static int spawnDistanceX = 1000;
+
+    @Config.Name("Spawn Radius Z")
+    @Config.Comment("The maximum distance from the origin that the player can spawn in the Z direction")
+    @Config.RangeInt(min = 0)
+    public static int spawnDistanceZ = 1000;
 
     @Config.Name("Spawn Centre X")
     @Config.Comment("The x component of the centre of the are where players spawn")
