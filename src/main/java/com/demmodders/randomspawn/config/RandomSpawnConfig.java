@@ -39,13 +39,17 @@ public class RandomSpawnConfig {
     @Config.RangeInt(min = 0)
     public static int spawnReDelay = 5;
 
+    @Config.Name("Split Radius into X and Z")
+    @Config.Comment("Uses different distances for X and Z")
+    public static boolean splitRadius = false;
+
     @Config.Name("Spawn Radius X")
     @Config.Comment("The maximum distance from the origin that the player can spawn in the x direction")
     @Config.RangeInt(min = 0)
     public static int spawnDistanceX = 1000;
 
     @Config.Name("Spawn Radius Z")
-    @Config.Comment("The maximum distance from the origin that the player can spawn in the Z direction")
+    @Config.Comment("The maximum distance from the origin that the player can spawn in the Z direction (only used if Split Radius into X and Z is enabled)")
     @Config.RangeInt(min = 0)
     public static int spawnDistanceZ = 1000;
 

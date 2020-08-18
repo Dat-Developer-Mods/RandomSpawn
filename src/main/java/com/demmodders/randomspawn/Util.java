@@ -124,10 +124,12 @@ public class Util {
      */
     public static BlockPos generateCoordinates(){
         Random random = new Random();
+        int x, z;
 
-        int x = random.nextInt(RandomSpawnConfig.spawnDistanceX);
+        x = random.nextInt(RandomSpawnConfig.spawnDistanceX);
         if (random.nextBoolean()) x *= -1;
-        int z = random.nextInt(RandomSpawnConfig.spawnDistanceZ);
+        if (RandomSpawnConfig.splitRadius) z = random.nextInt(RandomSpawnConfig.spawnDistanceZ);
+        else z = random.nextInt(RandomSpawnConfig.spawnDistanceX);
         if (random.nextBoolean()) z *= -1;
 
         return new BlockPos(x + RandomSpawnConfig.spawnX, 0, z + RandomSpawnConfig.spawnZ);
