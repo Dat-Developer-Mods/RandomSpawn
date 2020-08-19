@@ -62,7 +62,7 @@ public class SetPlayerSpawnCommand extends CommandBase {
         }
         thePlayer.setDimSpawn(((EntityPlayerMP) sender).dimension, sender.getPosition());
         Util.savePlayer(targetPlayer, thePlayer);
-        sender.sendMessage(new TextComponentString(DemConstants.TextColour.INFO + "Set the spawn of " + args[0] + " to your location: X=" + sender.getPosition().getX() + "Y=" + sender.getPosition().getY() + " Z=" + sender.getPosition().getZ()));
+        sender.sendMessage(new TextComponentString(DemConstants.TextColour.INFO + "Set " + (args.length == 0 ? "your spawn" : "the spawn of " + args[0]) + " to your current location: X=" + sender.getPosition().getX() + "Y=" + sender.getPosition().getY() + " Z=" + sender.getPosition().getZ()));
     }
 
     @Override
