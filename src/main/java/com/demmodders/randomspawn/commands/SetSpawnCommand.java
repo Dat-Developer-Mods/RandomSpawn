@@ -1,5 +1,6 @@
 package com.demmodders.randomspawn.commands;
 
+import com.demmodders.datmoddingapi.util.DemConstants;
 import com.demmodders.randomspawn.RandomSpawn;
 import com.demmodders.randomspawn.config.RandomSpawnConfig;
 import net.minecraft.command.CommandBase;
@@ -24,26 +25,26 @@ public class SetSpawnCommand extends CommandBase {
 
     @Override
     public String getUsage(ICommandSender sender) {
-        return TextFormatting.GOLD + "/setspawn - Sets the centre point where all players will spawn around";
+        return DemConstants.TextColour.COMMAND + "/setspawn -" + DemConstants.TextColour.INFO + " Sets the centre point where all players will spawn around";
     }
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         // Ensure its either being called by a player, or on a player
         if (!(sender instanceof EntityPlayerMP)) {
-            sender.sendMessage(new TextComponentString(TextFormatting.RED + "You must be a player to set the spawn, you could also set it in config"));
+            sender.sendMessage(new TextComponentString(DemConstants.TextColour.ERROR + "You must be a player to set the spawn, you could also set it in config"));
             return;
         }
 
         if (!PermissionAPI.hasPermission((EntityPlayerMP) sender, "datrandomteleport.rspawn.admin")) {
-            sender.sendMessage(new TextComponentString(TextFormatting.RED + "You don't have permission to do that"));
+            sender.sendMessage(new TextComponentString(DemConstants.TextColour.ERROR + "You don't have permission to do that"));
             return;
         }
 
         // Set the spawn in config and update the file
         RandomSpawnConfig.spawnX = (int) ((EntityPlayerMP) sender).posX;
         RandomSpawnConfig.spawnZ = (int) ((EntityPlayerMP) sender).posZ;
-        sender.sendMessage(new TextComponentString(TextFormatting.GOLD + "Set the spawn area centre to your location: X=" + sender.getPosition().getX() + " Z=" + sender.getPosition().getZ()));
+        sender.sendMessage(new TextComponentString(DemConstants.TextColour.INFO + "Set the spawn area centre to your location: X=" + sender.getPosition().getX() + " Z=" + sender.getPosition().getZ()));
         ConfigManager.sync(RandomSpawn.MODID, Config.Type.INSTANCE);
     }
 

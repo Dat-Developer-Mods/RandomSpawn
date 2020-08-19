@@ -17,5 +17,6 @@ public class CommandRegister {
         e.registerServerCommand(new RandomSpawnCommand());
         e.registerServerCommand(new ResetSpawnCommand());
         e.registerServerCommand(new SetSpawnCommand());
+        e.registerServerCommand(new SetPlayerSpawnCommand());
     }
 }

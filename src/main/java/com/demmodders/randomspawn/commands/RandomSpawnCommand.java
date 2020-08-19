@@ -2,6 +2,7 @@ package com.demmodders.randomspawn.commands;
 
 
 import com.demmodders.datmoddingapi.delayedexecution.DelayHandler;
+import com.demmodders.datmoddingapi.util.DemConstants;
 import com.demmodders.randomspawn.Util;
 import com.demmodders.randomspawn.config.RandomSpawnConfig;
 import com.demmodders.randomspawn.structures.Player;
@@ -34,7 +35,7 @@ public class RandomSpawnCommand extends CommandBase {
 
     @Override
     public String getUsage(ICommandSender sender) {
-        return TextFormatting.GOLD + "/spawn [player] - " + (RandomSpawnConfig.saveSpawn ? "Teleports you to your personal spawn, use \"/spawnreset\" for a new spawn" : "Teleports you to a random place in the world");
+        return DemConstants.TextColour.COMMAND + "/spawn [player] - " + DemConstants.TextColour.INFO + (RandomSpawnConfig.saveSpawn ? "Teleports you to your personal spawn, use" + DemConstants.TextColour.COMMAND + " /spawnreset" + DemConstants.TextColour.INFO + " for a new spawn" : "Teleports you to a random place in the world");
     }
 
     @Override
@@ -48,7 +49,7 @@ public class RandomSpawnCommand extends CommandBase {
         // If its by a player, make sure they have the permissions
         if (sender instanceof EntityPlayerMP) {
             if (!PermissionAPI.hasPermission((EntityPlayerMP) sender, "datrandomteleport.rspawn.spawn") || (!PermissionAPI.hasPermission((EntityPlayerMP) sender, "datrandomteleport.rspawn.spawnother") && args.length > 0)) {
-                sender.sendMessage(new TextComponentString(TextFormatting.RED + "You don't have permission to do that"));
+                sender.sendMessage(new TextComponentString(DemConstants.TextColour.ERROR + "You don't have permission to do that"));
                 return;
             }
         }
@@ -65,21 +66,21 @@ public class RandomSpawnCommand extends CommandBase {
         // Tell the player if we can't find their argument
         if (target != null){
             player = Util.getPlayer(target.getUniqueID());
-            if(args.length != 0) sender.sendMessage(new TextComponentString(TextFormatting.GOLD + "Teleporting " + args[0] + " to their spawn"));
+            if(args.length != 0) sender.sendMessage(new TextComponentString(DemConstants.TextColour.INFO + "Teleporting " + args[0] + " to their spawn"));
         } else {
-            sender.sendMessage(new TextComponentString(TextFormatting.RED + "Unable to find that player"));
+            sender.sendMessage(new TextComponentString(DemConstants.TextColour.ERROR + "Unable to find that player"));
             return;
         }
 
         // work out what to say to the player
         if (RandomSpawnConfig.saveSpawn && player != null) {
             if (target == sender && player.lastTeleport + (RandomSpawnConfig.spawnReDelay * 1000) > System.currentTimeMillis()){
-                sender.sendMessage(new TextComponentString(TextFormatting.RED + "you cannot teleport to spawn for another " + (RandomSpawnConfig.spawnReDelay - ((((System.currentTimeMillis())) - player.lastTeleport)/1000)) + " seconds"));
+                sender.sendMessage(new TextComponentString(DemConstants.TextColour.ERROR + "you cannot teleport to spawn for another " + (RandomSpawnConfig.spawnReDelay - ((((System.currentTimeMillis())) - player.lastTeleport)/1000)) + " seconds"));
                 return;
             }
-            target.sendMessage(new TextComponentString(TextFormatting.GOLD + "Telporting to your spawn" + (RandomSpawnConfig.spawnDelay > 0 ? " in " + RandomSpawnConfig.spawnDelay + " seconds" : "")));
+            target.sendMessage(new TextComponentString(DemConstants.TextColour.INFO + "Telporting to your spawn" + (RandomSpawnConfig.spawnDelay > 0 ? " in " + RandomSpawnConfig.spawnDelay + " seconds" : "")));
         } else {
-            target.sendMessage(new TextComponentString(TextFormatting.GOLD + "Telporting to a random destination" + (RandomSpawnConfig.spawnDelay > 0 ? " in " + RandomSpawnConfig.spawnDelay + " seconds" : "")));
+            target.sendMessage(new TextComponentString(DemConstants.TextColour.INFO + "Telporting to a random destination" + (RandomSpawnConfig.spawnDelay > 0 ? " in " + RandomSpawnConfig.spawnDelay + " seconds" : "")));
         }
 
         // Create the teleport event and wait for the delay

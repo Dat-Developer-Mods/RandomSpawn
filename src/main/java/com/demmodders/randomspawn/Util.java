@@ -36,7 +36,7 @@ public class Util {
             Reader reader = new FileReader(playerFile);
             return gson.fromJson(reader, Player.class);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            // e.printStackTrace();
         }
         return null;
     }
@@ -55,7 +55,7 @@ public class Util {
             writer.close();
             LOGGER.debug(RandomSpawn.MODID + ": Saved player " + PlayerID);
         } catch (IOException e) {
-            e.printStackTrace();
+            // e.printStackTrace();
         }
     }
 
