@@ -36,7 +36,7 @@ public class SetSpawnCommand extends CommandBase {
             return;
         }
 
-        if (!PermissionAPI.hasPermission((EntityPlayerMP) sender, "datrandomteleport.rspawn.admin")) {
+        if (!(PermissionAPI.hasPermission((EntityPlayerMP) sender, "datrandomteleport.rspawn.setcentre") || sender.canUseCommand(getRequiredPermissionLevel(), "datrandomteleport.rspawn.setcentre"))) {
             sender.sendMessage(new TextComponentString(DemConstants.TextColour.ERROR + "You don't have permission to do that"));
             return;
         }

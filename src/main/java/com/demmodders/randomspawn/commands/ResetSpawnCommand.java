@@ -65,7 +65,7 @@ public class ResetSpawnCommand extends CommandBase {
 
         // If called by a player make sure they have permission
         if (sender instanceof EntityPlayerMP) {
-            if (!PermissionAPI.hasPermission((EntityPlayerMP) sender, "datrandomteleport.rspawn.spawnreset") || (!PermissionAPI.hasPermission((EntityPlayerMP) sender, "datrandomteleport.rspawn.spawnresetother") && args.length > 0)) {
+            if (!(PermissionAPI.hasPermission((EntityPlayerMP) sender, "datrandomteleport.rspawn.spawnreset") || sender.canUseCommand(getRequiredPermissionLevel(), "datrandomteleport.rspawn.spawnreset")) || (!(PermissionAPI.hasPermission((EntityPlayerMP) sender, "datrandomteleport.rspawn.spawnresetother") || sender.canUseCommand(getRequiredPermissionLevel(), "datrandomteleport.rspawn.spawnresetother")) && args.length > 0)) {
                 sender.sendMessage(new TextComponentString(DemConstants.TextColour.ERROR + "You don't have permission to do that"));
                 return;
             }

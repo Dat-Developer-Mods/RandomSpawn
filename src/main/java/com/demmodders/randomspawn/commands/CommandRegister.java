@@ -10,7 +10,8 @@ public class CommandRegister {
         PermissionAPI.registerNode("datrandomteleport.rspawn.spawnother", DefaultPermissionLevel.OP, "Enables the user to use /spawn on other players");
         PermissionAPI.registerNode("datrandomteleport.rspawn.spawnreset", DefaultPermissionLevel.ALL, "Enables the user to use /spawnreset");
         PermissionAPI.registerNode("datrandomteleport.rspawn.spawnresetother", DefaultPermissionLevel.OP, "Enables the user to use /spawnreset on other players");
-        PermissionAPI.registerNode("datrandomteleport.rspawn.admin", DefaultPermissionLevel.OP, "Enables the user to use admin commands to configure the mod");
+        PermissionAPI.registerNode("datrandomteleport.rspawn.setcentre", DefaultPermissionLevel.OP, "Enables the user to use /setspawn");
+        PermissionAPI.registerNode("datrandomteleport.rspawn.setplayerspawn", DefaultPermissionLevel.OP, "Enables the user to use /setplayerspawn");
     }
 
     public static void registerCommands(FMLServerStartingEvent e){

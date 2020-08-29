@@ -48,7 +48,7 @@ public class RandomSpawnCommand extends CommandBase {
 
         // If its by a player, make sure they have the permissions
         if (sender instanceof EntityPlayerMP) {
-            if (!PermissionAPI.hasPermission((EntityPlayerMP) sender, "datrandomteleport.rspawn.spawn") || (!PermissionAPI.hasPermission((EntityPlayerMP) sender, "datrandomteleport.rspawn.spawnother") && args.length > 0)) {
+            if (!(PermissionAPI.hasPermission((EntityPlayerMP) sender, "datrandomteleport.rspawn.spawn") || sender.canUseCommand(getRequiredPermissionLevel(), "datrandomteleport.rspawn.spawn") || (!(PermissionAPI.hasPermission((EntityPlayerMP) sender, "datrandomteleport.rspawn.spawnother") || (sender.canUseCommand(getRequiredPermissionLevel(), "datrandomteleport.rspawn.spawnother"))) && args.length > 0))) {
                 sender.sendMessage(new TextComponentString(DemConstants.TextColour.ERROR + "You don't have permission to do that"));
                 return;
             }

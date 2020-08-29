@@ -37,12 +37,12 @@ public class SetPlayerSpawnCommand extends CommandBase {
         if (!(sender instanceof EntityPlayerMP)) {
             sender.sendMessage(new TextComponentString(DemConstants.TextColour.ERROR + "You cannot set a player's spawn from the console"));
             return;
-        } else if (!PermissionAPI.hasPermission((EntityPlayerMP) sender, "datrandomteleport.rspawn.admin")) {
+        } else if (!(PermissionAPI.hasPermission((EntityPlayerMP) sender, "datrandomteleport.rspawn.setplayerspawn") || sender.canUseCommand(getRequiredPermissionLevel(), "datrandomteleport.rspawn.setplayerspawn"))) {
             sender.sendMessage(new TextComponentString(DemConstants.TextColour.ERROR + "You don't have permission to do that"));
             return;
         }
         UUID targetPlayer;
-        // Ensure its either being called by a player, or on a player
+        // Ensure it's either being called by a player, or on a player
         if (args.length == 0) {
             targetPlayer = ((EntityPlayerMP) sender).getUniqueID();
         } else {
