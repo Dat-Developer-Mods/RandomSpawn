@@ -1,6 +1,7 @@
 package com.demmodders.randomspawn.commands;
 
 import com.demmodders.datmoddingapi.util.DemConstants;
+import com.demmodders.datmoddingapi.util.Permissions;
 import com.demmodders.randomspawn.RandomSpawn;
 import com.demmodders.randomspawn.config.RandomSpawnConfig;
 import net.minecraft.command.CommandBase;
@@ -36,7 +37,7 @@ public class SetSpawnCommand extends CommandBase {
             return;
         }
 
-        if (!(PermissionAPI.hasPermission((EntityPlayerMP) sender, "datrandomteleport.rspawn.setcentre") || sender.canUseCommand(getRequiredPermissionLevel(), "datrandomteleport.rspawn.setcentre"))) {
+        if (!Permissions.checkPermission(sender, "datrandomteleport.rspawn.setcentre", getRequiredPermissionLevel())) {
             sender.sendMessage(new TextComponentString(DemConstants.TextColour.ERROR + "You don't have permission to do that"));
             return;
         }

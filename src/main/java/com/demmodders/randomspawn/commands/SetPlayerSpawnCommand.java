@@ -1,6 +1,7 @@
 package com.demmodders.randomspawn.commands;
 
 import com.demmodders.datmoddingapi.util.DemConstants;
+import com.demmodders.datmoddingapi.util.Permissions;
 import com.demmodders.randomspawn.RandomSpawn;
 import com.demmodders.randomspawn.Util;
 import com.demmodders.randomspawn.config.RandomSpawnConfig;
@@ -37,7 +38,7 @@ public class SetPlayerSpawnCommand extends CommandBase {
         if (!(sender instanceof EntityPlayerMP)) {
             sender.sendMessage(new TextComponentString(DemConstants.TextColour.ERROR + "You cannot set a player's spawn from the console"));
             return;
-        } else if (!(PermissionAPI.hasPermission((EntityPlayerMP) sender, "datrandomteleport.rspawn.setplayerspawn") || sender.canUseCommand(getRequiredPermissionLevel(), "datrandomteleport.rspawn.setplayerspawn"))) {
+        } else if (!Permissions.checkPermission(sender, "datrandomteleport.rspawn.setplayerspawn", getRequiredPermissionLevel())) {
             sender.sendMessage(new TextComponentString(DemConstants.TextColour.ERROR + "You don't have permission to do that"));
             return;
         }

@@ -3,6 +3,7 @@ package com.demmodders.randomspawn.commands;
 
 import com.demmodders.datmoddingapi.delayedexecution.DelayHandler;
 import com.demmodders.datmoddingapi.util.DemConstants;
+import com.demmodders.datmoddingapi.util.Permissions;
 import com.demmodders.randomspawn.Util;
 import com.demmodders.randomspawn.config.RandomSpawnConfig;
 import com.demmodders.randomspawn.structures.Player;
@@ -48,7 +49,7 @@ public class RandomSpawnCommand extends CommandBase {
 
         // If its by a player, make sure they have the permissions
         if (sender instanceof EntityPlayerMP) {
-            if (!(PermissionAPI.hasPermission((EntityPlayerMP) sender, "datrandomteleport.rspawn.spawn") || sender.canUseCommand(getRequiredPermissionLevel(), "datrandomteleport.rspawn.spawn") || (!(PermissionAPI.hasPermission((EntityPlayerMP) sender, "datrandomteleport.rspawn.spawnother") || (sender.canUseCommand(getRequiredPermissionLevel(), "datrandomteleport.rspawn.spawnother"))) && args.length > 0))) {
+            if (!Permissions.checkPermission(sender, "datrandomteleport.rspawn.spawn", getRequiredPermissionLevel()) || (!Permissions.checkPermission(sender, "datrandomteleport.rspawn.spawnother", getRequiredPermissionLevel()) && args.length > 0)) {
                 sender.sendMessage(new TextComponentString(DemConstants.TextColour.ERROR + "You don't have permission to do that"));
                 return;
             }

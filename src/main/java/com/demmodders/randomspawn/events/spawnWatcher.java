@@ -14,7 +14,10 @@ public class spawnWatcher {
     public static void playerJoin(PlayerEvent.PlayerLoggedInEvent e){
         // Check they're joining for the first time (so they don't randomly teleport when they join for the first time)
         if (Util.getPlayer(e.player.getUniqueID()) == null){
+            RandomSpawn.LOGGER.info("Dat Random Spawn has noticed that a player has joined for the first time");
             Util.teleportPlayer((EntityPlayerMP) e.player, true);
+        } else {
+            RandomSpawn.LOGGER.info("Dat Random Spawn has noticed that a player has not joined for the first time");
         }
     }
 
