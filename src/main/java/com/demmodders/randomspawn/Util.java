@@ -74,11 +74,10 @@ public class Util {
      * @return A block position which is probably safe to spawn in
      */
     public static BlockPos generateSpawnPos(int dimension){
-        BlockPos blockPos;
         World world = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(dimension);
 
         // Generate Position
-        blockPos = null;
+        BlockPos blockPos = null;
         int genCount = RandomSpawnConfig.generationRetries;
         while ((blockPos == null || (!RandomSpawnConfig.waterSpawn && world.getBlockState(blockPos.down()).getMaterial().isLiquid()) || blockPos.getY() < 1) && (genCount != 0)) {
             if (RandomSpawnConfig.accurateGeneration) {
@@ -102,7 +101,7 @@ public class Util {
         }
 
         if (genCount == 0) {
-            blockPos = world.getTopSolidOrLiquidBlock(new BlockPos(RandomSpawnConfig.spawnX, 0, RandomSpawnConfig.spawnZ));
+            if (!RandomSpawnConfig.failToLastGeneratedLocation) blockPos = world.getTopSolidOrLiquidBlock(new BlockPos(RandomSpawnConfig.spawnX, 0, RandomSpawnConfig.spawnZ));
             LOGGER.warn(RandomSpawn.MODID + ": Failed to generate a spawn " + RandomSpawnConfig.generationRetries + " times in a row, this probably means the spawn radius is too small, or the radius contains only ocean and water spawning is disabled, or the radius contains only one giant hole. Whatever the problem is, someone is having a bad time while spawning");
         }
 

@@ -66,10 +66,13 @@ public class RandomSpawnConfig {
     public static boolean accurateGeneration = false;
 
     @Config.Name("Max Generation Attempts")
-    @Config.Comment("How many times should the mod try to generate a spawn position after failing before defaulting to the Spawn Centre (-1 for infinite)")
+    @Config.Comment("How many times should the mod try to generate a spawn position after failing")
     @Config.RangeInt(min = -1)
     public static int generationRetries = 5;
 
+    @Config.Name("Fail to Last Generated Location")
+    @Config.Comment("If the mod fails to find a spawn after the maximum generation attempts, should it use the last generated location (true)? or the centre of the spawn radius? (false)")
+    public static boolean failToLastGeneratedLocation = false;
 
     @Mod.EventBusSubscriber(modid = RandomSpawn.MODID)
     private static class EventHandler {

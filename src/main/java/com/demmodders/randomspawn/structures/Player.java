@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 public class Player {
     public HashMap<Integer, BlockPos> spawn = new HashMap<>();
-    public long lastTeleport = 0;
+    transient public long lastTeleport = 0;
 
     // Empty constructor for GSON
     public Player(){
