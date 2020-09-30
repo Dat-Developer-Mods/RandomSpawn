@@ -22,6 +22,7 @@ import java.util.Random;
 import java.util.UUID;
 
 public class Util {
+    static Random random = new Random();
     public static final Logger LOGGER = LogManager.getLogger(RandomSpawn.MODID);
     /**
      * Get the player object containing their spawn and when they last teleported
@@ -122,7 +123,6 @@ public class Util {
      * @return A block position almost in a decent place to spawn
      */
     public static BlockPos generateCoordinates(){
-        Random random = new Random();
         int x, z;
 
         x = random.nextInt(RandomSpawnConfig.spawnDistanceX);
