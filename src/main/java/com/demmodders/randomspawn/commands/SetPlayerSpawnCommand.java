@@ -42,14 +42,14 @@ public class SetPlayerSpawnCommand extends CommandBase {
             sender.sendMessage(new TextComponentString(DemConstants.TextColour.ERROR + "You don't have permission to do that"));
             return;
         }
-        UUID targetPlayer;
+        EntityPlayerMP targetPlayer;
         // Ensure it's either being called by a player, or on a player
         if (args.length == 0) {
-            targetPlayer = ((EntityPlayerMP) sender).getUniqueID();
+            targetPlayer = ((EntityPlayerMP) sender);
         } else {
             EntityPlayerMP player = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerByUsername(args[0]);
             if (player != null) {
-                targetPlayer = player.getUniqueID();
+                targetPlayer = player;
             } else {
                 sender.sendMessage(new TextComponentString(DemConstants.TextColour.ERROR + "Random spawn cannot find that player"));
                 return;
@@ -57,12 +57,8 @@ public class SetPlayerSpawnCommand extends CommandBase {
         }
 
         // Set the spawn in config and update the file
-        Player thePlayer = Util.getPlayer(targetPlayer);
-        if (thePlayer == null) {
-            thePlayer = Util.createPlayer();
-        }
-        thePlayer.setDimSpawn(((EntityPlayerMP) sender).dimension, sender.getPosition());
-        Util.savePlayer(targetPlayer, thePlayer);
+        targetPlayer.setSpawnDimension(((EntityPlayerMP) sender).dimension);
+        targetPlayer.setSpawnChunk(sender.getPosition(), true, ((EntityPlayerMP) sender).dimension);
         sender.sendMessage(new TextComponentString(DemConstants.TextColour.INFO + "Set " + (args.length == 0 ? "your spawn" : "the spawn of " + args[0]) + " to your current location: X=" + sender.getPosition().getX() + "Y=" + sender.getPosition().getY() + " Z=" + sender.getPosition().getZ()));
     }
 

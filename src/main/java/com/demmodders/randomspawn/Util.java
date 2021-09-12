@@ -4,6 +4,9 @@ import com.demmodders.datmoddingapi.structures.Location;
 import com.demmodders.datmoddingapi.util.BlockPosUtil;
 import com.demmodders.datmoddingapi.util.DatTeleporter;
 import com.demmodders.datmoddingapi.util.FileHelper;
+import com.demmodders.randomspawn.capability.IRespawn;
+import com.demmodders.randomspawn.capability.RespawnProvider;
+import com.demmodders.randomspawn.capability.RespawnStorage;
 import com.demmodders.randomspawn.config.RandomSpawnConfig;
 import com.demmodders.randomspawn.structures.Player;
 import com.google.gson.Gson;
@@ -11,6 +14,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import org.apache.logging.log4j.LogManager;
@@ -42,32 +46,6 @@ public class Util {
         return null;
     }
 
-    /**
-     * Save the given player to a file
-     * @param PlayerID The id of the player being saved
-     * @param Player The Player object being saved
-     */
-    public static void savePlayer(UUID PlayerID, Player Player){
-        Gson gson = new Gson();
-        File playerFile = FileHelper.openFile(new File(FileHelper.getWorldSubDir(RandomSpawn.MODID), PlayerID + ".json"));
-        try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(playerFile));
-            writer.write(gson.toJson(Player));
-            writer.close();
-            LOGGER.debug(RandomSpawn.MODID + ": Saved player " + PlayerID);
-        } catch (IOException e) {
-            // e.printStackTrace();
-        }
-    }
-
-    /**
-     * Create a player with a random spawn
-     * @return The player object
-     */
-    public static Player createPlayer(){
-        return new Player(RandomSpawnConfig.defaultSpawnDimension, generateSpawnPos(RandomSpawnConfig.defaultSpawnDimension));
-    }
-
 
     /**
      * Generates a random spawn position, trying to adjust so the player doesn't spawn in the ground
@@ -75,6 +53,7 @@ public class Util {
      * @return A block position which is probably safe to spawn in
      */
     public static BlockPos generateSpawnPos(int dimension){
+        // TODO: Revise with forge.net.minecraft.world.worldserver#createSpawnPoint
         World world = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(dimension);
 
         // Generate Position
@@ -126,9 +105,8 @@ public class Util {
         int x, z;
 
         x = random.nextInt(RandomSpawnConfig.spawnDistanceX);
+        z = random.nextInt(RandomSpawnConfig.spawnDistanceZ);
         if (random.nextBoolean()) x *= -1;
-        if (RandomSpawnConfig.splitRadius) z = random.nextInt(RandomSpawnConfig.spawnDistanceZ);
-        else z = random.nextInt(RandomSpawnConfig.spawnDistanceX);
         if (random.nextBoolean()) z *= -1;
 
         return new BlockPos(x + RandomSpawnConfig.spawnX, 0, z + RandomSpawnConfig.spawnZ);
@@ -138,42 +116,32 @@ public class Util {
      * Teleports the given player to their spawn
      * @param player The player being telported
      */
-    public static void teleportPlayer(EntityPlayerMP player, boolean forceSpawn){
-        Player playerObject = Util.getPlayer(player.getUniqueID());
-        BlockPos spawnPos;
+    public static void teleportPlayer(EntityPlayerMP player){
+        BlockPos spawnPos = player.getBedLocation(player.dimension);
         int dimension;
 
-        if (RandomSpawnConfig.forceSpawnDimension || forceSpawn || !FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(player.dimension).provider.canRespawnHere()) {
-            dimension = RandomSpawnConfig.defaultSpawnDimension;
-        } else {
+        if (spawnPos != null) {
             dimension = player.dimension;
-        }
-
-        if (playerObject == null) {
-            playerObject = new Player(dimension, generateSpawnPos(dimension));
-            savePlayer(player.getUniqueID(), playerObject);
-        } else if (!playerObject.spawn.containsKey(dimension) || !RandomSpawnConfig.saveSpawn){
-            playerObject.spawn.put(dimension, generateSpawnPos(dimension));
-            savePlayer(player.getUniqueID(), playerObject);
         } else {
-            if (RandomSpawnConfig.safeSpawn) {
-                spawnPos = BlockPosUtil.findSafeZ(dimension, playerObject.spawn.get(dimension), 4);
-                if (spawnPos == null) {
-                    LOGGER.warn(RandomSpawn.MODID + ": Spawn is unsafe, giving the player a new spawn");
-                    playerObject.spawn.put(dimension, generateSpawnPos(dimension));
-                } else {
-                    playerObject.spawn.put(dimension, spawnPos);
-                }
-                savePlayer(player.getUniqueID(), playerObject);
-            }
+            dimension = player.getSpawnDimension();
+            // TODO: check if bedpos is not set, if it isn't restore from nbt
+            spawnPos = null;
         }
 
 
+//        if (RandomSpawnConfig.safeSpawn) {
+//            spawnPos = BlockPosUtil.findSafeZ(dimension, playerObject.spawn.get(dimension), 4);
+//            if (spawnPos == null) {
+//                LOGGER.warn(RandomSpawn.MODID + ": Spawn is unsafe, giving the player a new spawn");
+//                playerObject.spawn.put(dimension, generateSpawnPos(dimension));
+//            } else {
+//                playerObject.spawn.put(dimension, spawnPos);
+//            }
+//            savePlayer(player.getUniqueID(), playerObject);
+//        }
 
-        spawnPos = playerObject.spawn.get(dimension);
-
-        // Hack to prevent player moving wrongly
-        ObfuscationReflectionHelper.setPrivateValue(EntityPlayerMP.class, player, true, "invulnerableDimensionChange", "field_184851_cj");
+//        // Hack to prevent player moving wrongly
+//        ObfuscationReflectionHelper.setPrivateValue(EntityPlayerMP.class, player, true, "invulnerableDimensionChange", "field_184851_cj");
 
         // Handle cross dimension
         if (player.dimension == dimension) {
@@ -181,5 +149,12 @@ public class Util {
         } else {
             player.changeDimension(dimension, new DatTeleporter(new Location(dimension, spawnPos.getX() + .5D, spawnPos.getY(), spawnPos.getZ() + .5D, 0, 0)));
         }
+    }
+
+    public static void resetPlayerSpawn(EntityPlayerMP player) {
+        BlockPos pos = generateSpawnPos(player.getSpawnDimension());
+        player.setSpawnChunk(pos, true, player.getSpawnDimension());
+
+        player.getCapability(RespawnProvider.RESPAWN_CAPABILITY, null).setSpawn(pos);
     }
 }

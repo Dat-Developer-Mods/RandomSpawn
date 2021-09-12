@@ -1,6 +1,7 @@
 package com.demmodders.randomspawn.commands;
 
 import com.demmodders.datmoddingapi.util.DemConstants;
+import com.demmodders.datmoddingapi.util.DemStringUtils;
 import com.demmodders.datmoddingapi.util.Permissions;
 import com.demmodders.randomspawn.Util;
 import com.demmodders.randomspawn.config.RandomSpawnConfig;
@@ -79,7 +80,6 @@ public class ResetSpawnCommand extends CommandBase {
         }
 
         // Work out who the target is
-        Player player;
         EntityPlayerMP target;
         if (args.length != 0) {
             target = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerByUsername(args[0]);
@@ -88,15 +88,14 @@ public class ResetSpawnCommand extends CommandBase {
         }
 
         if (target != null){
-            if(args.length != 0) sender.sendMessage(new TextComponentString(DemConstants.TextColour.INFO + "resetting " + args[0] + "'s spawn"));
+            if(args.length != 0) sender.sendMessage(new TextComponentString(DemConstants.TextColour.INFO + "resetting " + DemStringUtils.makePossessive(args[0]) + " spawn"));
         } else {
             sender.sendMessage(new TextComponentString(DemConstants.TextColour.ERROR + "Unable to find that player"));
             return;
         }
 
         // Figure out a new spawn point
-        player = new Player(((EntityPlayerMP) sender).dimension, Util.generateSpawnPos(RandomSpawnConfig.defaultSpawnDimension));
-        Util.savePlayer((target).getUniqueID(), player);
+        Util.resetPlayerSpawn(target);
         target.sendMessage(new TextComponentString(DemConstants.TextColour.INFO + "Your spawn has been reset"));
     }
 }

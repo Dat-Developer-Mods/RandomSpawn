@@ -1,9 +1,14 @@
 package com.demmodders.randomspawn;
 
 import com.demmodders.randomspawn.commands.CommandRegister;
+import com.demmodders.randomspawn.capability.IRespawn;
+import com.demmodders.randomspawn.capability.Respawn;
+import com.demmodders.randomspawn.capability.RespawnStorage;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,6 +22,11 @@ public class RandomSpawn
     public static final String MC_VERSION = "[1.12.2]";
 
     public static Logger LOGGER = LogManager.getLogger(MODID);
+
+    @Mod.EventHandler
+    public void preInit(FMLPreInitializationEvent event) {
+        CapabilityManager.INSTANCE.register(IRespawn.class, new RespawnStorage(), Respawn.class);
+    }
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
