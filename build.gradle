@@ -87,7 +87,7 @@ dependencies {
     minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2855'
 
     implementation 'com.github.jtljac:datmoddingapi:1.2.1'
-    implementation 'com.github.jtljac:simple-commands:1.0.+'
+    implementation 'com.github.jtljac:simple-commands:1.0.3'
     implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.0'
     // for more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html

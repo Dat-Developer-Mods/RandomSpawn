@@ -1,22 +1,18 @@
 package com.demmodders.randomspawn;
 
 import com.demmodders.datmoddingapi.structures.Location;
-import com.demmodders.datmoddingapi.util.BlockPosUtil;
 import com.demmodders.datmoddingapi.util.DatTeleporter;
 import com.demmodders.datmoddingapi.util.FileHelper;
-import com.demmodders.randomspawn.capability.IRespawn;
 import com.demmodders.randomspawn.capability.RespawnProvider;
-import com.demmodders.randomspawn.capability.RespawnStorage;
 import com.demmodders.randomspawn.config.RandomSpawnConfig;
 import com.demmodders.randomspawn.structures.Player;
 import com.google.gson.Gson;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -117,6 +113,7 @@ public class Util {
      * @param player The player being telported
      */
     public static void teleportPlayer(EntityPlayerMP player){
+        // TODO: Fix for new dimension logic
         BlockPos spawnPos = player.getBedLocation(player.dimension);
         int dimension;
 
@@ -151,10 +148,29 @@ public class Util {
         }
     }
 
-    public static void resetPlayerSpawn(EntityPlayerMP player) {
+    public static void resetPlayerSpawn(EntityPlayerMP player, int dimension) {
         BlockPos pos = generateSpawnPos(player.getSpawnDimension());
         player.setSpawnChunk(pos, true, player.getSpawnDimension());
 
         player.getCapability(RespawnProvider.RESPAWN_CAPABILITY, null).setSpawn(pos);
+    }
+
+    public static int getValidSpawnDimension(EntityPlayerMP playerIn, int dimension) {
+        if (RandomSpawnConfig.forceSpawnDimension) {
+            return RandomSpawnConfig.defaultSpawnDimension;
+        }
+
+        MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+        World world = server.getWorld(dimension);
+        if (world == null)
+        {
+            dimension = playerIn.getSpawnDimension();
+        }
+        else if (!world.provider.canRespawnHere())
+        {
+            dimension = world.provider.getRespawnDimension(playerIn);
+        }
+        if (server.getWorld(dimension) == null) dimension = 0;
+        return dimension;
     }
 }

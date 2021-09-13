@@ -5,7 +5,6 @@ import com.demmodders.datmoddingapi.util.DemStringUtils;
 import com.demmodders.datmoddingapi.util.Permissions;
 import com.demmodders.randomspawn.Util;
 import com.demmodders.randomspawn.config.RandomSpawnConfig;
-import com.demmodders.randomspawn.structures.Player;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -13,9 +12,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.server.permission.PermissionAPI;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -95,7 +92,7 @@ public class ResetSpawnCommand extends CommandBase {
         }
 
         // Figure out a new spawn point
-        Util.resetPlayerSpawn(target);
+        Util.resetPlayerSpawn(target, dimension);
         target.sendMessage(new TextComponentString(DemConstants.TextColour.INFO + "Your spawn has been reset"));
     }
 }
